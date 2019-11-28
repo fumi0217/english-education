@@ -1,24 +1,28 @@
 <p>メールアドレスとパスワード、パスワード（確認用）を入力してください。</p>
 
-<div id="errorMessages">
-    <p *ngFor="let message of messages">{{ message }}</p>
-    
-</div>
-
 <div id="confirmResult" *ngIf="result">
     <p>{{ result }}</p>
 </div>
 
 <form [formGroup]="signupForm" (ngSubmit)="signUp()">
     <table>
+        <tr><th></th><td>
+            <p class="errorMessages" *ngIf="emailError">{{ emailError }}</p>
+        </td></tr>
         <tr>
             <th>メールアドレス：</th><td><input #email type="email" formControlName="email" (blur)="onCheckEmail(email.value)" /></td>
         </tr>
+        <tr><th></th><td>
+            <p class="errorMessages" *ngIf="passwordError">{{ passwordError }}</p>
+        </td></tr>
         <tr>
-            <th>パスワード：</th><td><input type="password" formControlName="password" /></td>
+            <th>パスワード：</th><td><input #password type="password" formControlName="password" (blur)="onCheckPassword(password.value)" /></td>
         </tr>
+        <tr><th></th><td>
+            <p class="errorMessages" *ngIf="confirmedPasswordError">{{ confirmedPasswordError }}</p>
+        </td></tr>
         <tr>
-            <th>パスワード（確認用）：</th><td><input type="password" formControlName="passwordConfirmed" /></td>
+            <th>パスワード（確認用）：</th><td><input #confirmedPassword type="password" formControlName="confirmedPassword" (blur)="onCheckConfirmedPassword(confirmedPassword.value)" /></td>
         </tr>
         <tr>
             <th></th><td><input type="submit" value="登録する" [disabled]="isDisable" /></td>
