@@ -1,10 +1,10 @@
-<p>メールアドレスとパスワード、パスワード（確認用）を入力してください。</p>
+<p>{{ message }}</p>
 
 <div id="confirmResult" *ngIf="result">
     <p>{{ result }}</p>
 </div>
 
-<form [formGroup]="signupForm" (ngSubmit)="signUp()">
+<form [formGroup]="signupForm" (ngSubmit)="signUp(email.value, password.value)">
     <table>
         <tr><th></th><td>
             <p class="errorMessages" *ngIf="emailError">{{ emailError }}</p>

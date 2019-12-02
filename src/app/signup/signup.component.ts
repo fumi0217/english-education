@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-signup',
@@ -19,8 +20,10 @@ export class SignupComponent implements OnInit {
   result: string;
   // 登録するボタン押下制御用
   isDisable: boolean;
+  // 画面表示メッセージ
+  message: string;
 
-  constructor() { }
+  constructor(private db: AngularFirestore) { }
 
   ngOnInit() {
     this.signupForm = new FormGroup({
@@ -35,13 +38,32 @@ export class SignupComponent implements OnInit {
     // 初期遷移時、登録するボタンは押下不可
     this.isDisable = true;
     this.emailError = "";
+    this.message = "メールアドレスとパスワード、パスワード（確認用）を入力してください。";
   }
 
   /*
    会員登録を行う
   */
-  signUp(){
-    this.result = JSON.stringify(this.signupForm.value);
+  signUp(email: string, password: string){
+    // 入力された登録内容（メアドとパスワード）を取得する
+    const data = {
+      mail: email,
+      password: password
+    }
+
+    // firestoreに会員データを追加する
+    this.db.collection('users').add(data)
+      .then(() => {
+        // データ追加成功
+        this.signupForm.get('email').setValue("");
+        this.signupForm.get('password').setValue("");
+        this.signupForm.get('confirmedPassword').setValue("");
+        this.message = `正常に会員登録が完了しました。(${JSON.stringify(data)})`;
+      })
+      .catch((error: any) => {
+        // データ追加失敗
+        this.message = `会員登録に失敗しました。(${error})`;
+      });
   }
 
   /*
