@@ -1,1 +1,25 @@
-<p>login works!</p>
+<p>{{ message }}</p>
+
+<div id="confirmResult" *ngIf="result">
+    <p>{{ result }}</p>
+</div>
+
+<form [formGroup]="loginForm" (ngSubmit)="login(email.value, password.value)">
+    <table>
+        <tr><th></th><td>
+            <p class="errorMessages" *ngIf="emailError">{{ emailError }}</p>
+        </td></tr>
+        <tr>
+            <th>メールアドレス：</th><td><input #email type="email" formControlName="email" (blur)="onCheckEmail(email.value)" /></td>
+        </tr>
+        <tr><th></th><td>
+            <p class="errorMessages" *ngIf="passwordError">{{ passwordError }}</p>
+        </td></tr>
+        <tr>
+            <th>パスワード：</th><td><input #password type="password" formControlName="password" (blur)="onCheckPassword(password.value)" /></td>
+        </tr>
+        <tr>
+            <th></th><td><input type="submit" value="ログインする" [disabled]="isDisable" /></td>
+        </tr>
+    </table>
+</form>

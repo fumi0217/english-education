@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
@@ -38,6 +38,8 @@ export class SignupComponent implements OnInit {
     // 初期遷移時、登録するボタンは押下不可
     this.isDisable = true;
     this.emailError = "";
+    this.passwordError = "";
+    this.confirmedPasswordError = "";
     this.message = "メールアドレスとパスワード、パスワード（確認用）を入力してください。";
   }
 
@@ -78,7 +80,7 @@ export class SignupComponent implements OnInit {
     const emailRegex =  /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@{1}[A-Za-z0-9_.-]{1,}\.[A-Za-z0-9]{1,}$/;
     // メールアドレスが空である場合
     if(email == null || email == "")
-      this.emailError = "メールアドレスは必須項目です。";
+      this.emailError = "メールアドレスを入力してください。";
     // メールアドレスの入力文字数が100文字を超える場合
     else if(email.length > 100)
       this.emailError = "メールアドレスは100文字以下で入力してください。"
@@ -104,7 +106,7 @@ export class SignupComponent implements OnInit {
     const passwordRegex = /^[0-9a-zA-Z]*$/;
     // パスワードが空である場合
     if(password == null || password == "")
-      this.passwordError = "パスワードは必須項目です。";
+      this.passwordError = "パスワードを入力してください。";
     // パスワードの文字数が8文字よりも小さい場合
     else if(password.length < 8)
       this.passwordError = "パスワードは8文字以上で入力してください。"
@@ -132,7 +134,7 @@ export class SignupComponent implements OnInit {
     this.confirmedPasswordError = "";
     // パスワード（確認用）が空である場合
     if(confirmedPassword == null || confirmedPassword =="")
-      this.confirmedPasswordError = "パスワード（確認用）は必須項目です。"
+      this.confirmedPasswordError = "パスワード（確認用）を入力してください。"
     else
       // パスワードとパスワード（確認用）が一致しているかチェックする
       this.checkPasswords();
