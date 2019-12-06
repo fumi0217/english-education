@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,7 @@ export class LoginComponent implements OnInit {
   // ログインするボタン押下制御用
   isDisable: boolean;
 
-  constructor(private db: AngularFirestore) { }
+  constructor(private db: AngularFirestore, private router: Router) { }
 
   ngOnInit() {
     this.message = "メールアドレスとパスワードを入力してください。";
@@ -50,14 +51,15 @@ export class LoginComponent implements OnInit {
     this.db.collection('users', ref => ref.where('mail', '==', data.mail))
       .get()
       .subscribe(users => {
-        // メールアドレスが一致する場合（firestoreではメールアドレスは一意であるため）
-        if(users.size == 1){
-          const user = users.docs.pop();
-          // パスワードが一致しているかどうか確認
-          this.result = user.data().password ==　data.password ? "ログインできました。" : "パスワードが間違っています。";          
+        const user = users.docs.pop();
+        // メールアドレスが一致する（firestoreではメールアドレスは一意であるため）かつ、
+        // パスワードが一致する場合
+        if(users.size == 1 && user.data().password ==　data.password){
+          // 会員ページに遷移する
+          this.router.navigate(['/member']);   
         }else{
-          // メールアドレスが一致しない場合
-          this.result = "メールアドレスはありませんでした。";
+          // メールアドレス、もしくはパスワードが一致しなかった場合
+          this.result = "入力したメールアドレス、もしくはパスワードに誤りがあります。";
         }
       },
       // firestoreへの問い合わせにて、エラーが発生した場合

@@ -3,11 +3,23 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { MemberComponent } from './member/member.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { TopPageComponent } from './top-page/top-page.component';
+
+const appRoutes: Routes = [
+  { path: 'signup', component: SignupComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'member', component: MemberComponent },
+  // TODO: ログインしているか確かめて、してなかったらログイン画面に飛ばすガードを噛ませる
+  { path: '', redirectTo: '/member', pathMatch: 'full' },
+  { path: '**', component: PageNotFoundComponent }
+];
 
 var config = {
   apiKey: "AIzaSyCFWrpCfBINRtcTsy-vn-cwTrEnSzOk9Nk",
@@ -25,9 +37,15 @@ var config = {
     AppComponent,
     LoginComponent,
     SignupComponent,
-    MemberComponent
+    MemberComponent,
+    PageNotFoundComponent,
+    TopPageComponent
   ],
   imports: [
+    RouterModule.forRoot(
+      appRoutes,
+      { enableTracing: true }
+    ),
     BrowserModule,
     ReactiveFormsModule,
     AngularFireModule.initializeApp(config),

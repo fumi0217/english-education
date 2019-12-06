@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -23,7 +24,7 @@ export class SignupComponent implements OnInit {
   // 画面表示メッセージ
   message: string;
 
-  constructor(private db: AngularFirestore) { }
+  constructor(private db: AngularFirestore, private router: Router) { }
 
   ngOnInit() {
     this.signupForm = new FormGroup({
@@ -56,14 +57,11 @@ export class SignupComponent implements OnInit {
     // firestoreに会員データを追加する
     this.db.collection('users').add(data)
       .then(() => {
-        // データ追加成功
-        this.signupForm.get('email').setValue("");
-        this.signupForm.get('password').setValue("");
-        this.signupForm.get('confirmedPassword').setValue("");
-        this.message = `正常に会員登録が完了しました。(${JSON.stringify(data)})`;
+        // 会員登録成功の場合、ログインページへ遷移する
+        this.router.navigate(['/login']);
       })
       .catch((error: any) => {
-        // データ追加失敗
+        // 会員登録失敗時
         this.message = `会員登録に失敗しました。(${error})`;
       });
   }
@@ -162,6 +160,8 @@ export class SignupComponent implements OnInit {
 
   /*
    登録するボタンの押下制御を行う
+
+   TODO: ある項目についてエラーを出した後、そのエラーを解消した場合、他項目が未入力でも登録するボタンの押下が可能となってしまっている
   */
   validate(){
     // メールアドレス、パスワード、パスワード（確認用）のうち、いずれにもエラーがない場合
