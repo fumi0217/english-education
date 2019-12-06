@@ -7,6 +7,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
+import { MemberComponent } from './member/member.component';
 
 var config = {
   apiKey: "AIzaSyCFWrpCfBINRtcTsy-vn-cwTrEnSzOk9Nk",
@@ -23,7 +24,8 @@ var config = {
   declarations: [
     AppComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    MemberComponent
   ],
   imports: [
     BrowserModule,
