@@ -10,7 +10,6 @@ import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { MemberComponent } from './member/member.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { TopPageComponent } from './top-page/top-page.component';
 
 const appRoutes: Routes = [
   { path: 'signup', component: SignupComponent },
@@ -38,8 +37,7 @@ var config = {
     LoginComponent,
     SignupComponent,
     MemberComponent,
-    PageNotFoundComponent,
-    TopPageComponent
+    PageNotFoundComponent
   ],
   imports: [
     RouterModule.forRoot(
